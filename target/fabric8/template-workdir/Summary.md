@@ -1,1 +1,0 @@
-Simple standalone Java Container (main class)

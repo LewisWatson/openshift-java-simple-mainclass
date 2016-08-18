@@ -3,9 +3,9 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.cgi.charmuk</groupId>
-  <artifactId>java-simple-mainclass-archetype</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>LewisWatson</groupId>
+  <artifactId>java-simple-mainclass</artifactId>
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Fabric8 :: Quickstarts :: Java :: Simple main class</name>
@@ -14,12 +14,13 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <!-- fabric8 version -->
-    <fabric8.version>2.2.84</fabric8.version>
+    <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
+    <fuse.version>6.2.1.redhat-084</fuse.version>
+    <fabric8.version>2.2.0.redhat-079</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/s2i-java:1.2</docker.from>
+    <docker.from>jboss-fuse-6/fis-java-openshift:1.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
@@ -32,10 +33,18 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- fabric8 bom must be before fabric8 bom -->
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
         <version>${fabric8.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.fuse.bom</groupId>
+        <artifactId>jboss-fuse-parent</artifactId>
+        <version>${fuse.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -94,10 +103,10 @@
           <execution>
             <id>hawt-app</id>
             <goals>
-              <goal>build</goal>
-            </goals>
+<goal>build</goal>
+</goals>
             <configuration>
-              <javaMainClass>com.cgi.charmuk.java_simple_mainclass_archetype.Main</javaMainClass>
+              <javaMainClass>LewisWatson.Main</javaMainClass>
             </configuration>
           </execution>
         </executions>
@@ -119,7 +128,7 @@
                 </assembly>
                 <env>
                   <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
-                  <JAVA_MAIN_CLASS>com.cgi.charmuk.java_simple_mainclass_archetype.Main</JAVA_MAIN_CLASS>
+                  <JAVA_MAIN_CLASS>LewisWatson.Main</JAVA_MAIN_CLASS>
                 </env>
               </build>
             </image>
@@ -133,7 +142,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>com.cgi.charmuk.java_simple_mainclass_archetype.Main</mainClass>
+          <mainClass>LewisWatson.Main</mainClass>
         </configuration>
       </plugin>
     </plugins>
